@@ -1,24 +1,23 @@
-pip install yfinance
-pip install matplotlib
 import yfinance as yf
 import matplotlib.pyplot as plt
 
-# Download data for MSFT and AAPL
-msft = yf.Ticker("MSFT")
-aapl = yf.Ticker("AAPL")
+# Download historical data for MSFT and AAPL
+msft = yf.download("MSFT", start="2021-01-01", end="2023-02-27")
+aapl = yf.download("AAPL", start="2021-01-01", end="2023-02-27")
 
-msft_data = msft.history(period="max")
-aapl_data = aapl.history(period="max")
+# Calculate the difference between the closing prices of MSFT and AAPL
+msft_appl_diff = msft['Close'] - aapl['Close']
 
-# Plot the data
-fig, ax = plt.subplots(figsize=(10, 5))
+# Plot the closing prices of MSFT, AAPL, and MSFT_APPL_DIFF
+plt.plot(msft.index, msft['Close'], label='MSFT')
+plt.plot(aapl.index, aapl['Close'], label='AAPL')
+plt.plot(msft_appl_diff.index, msft_appl_diff, label='MSFT_APPL_DIFF')
 
-ax.plot(msft_data.index, msft_data["Close"], label="MSFT")
-ax.plot(aapl_data.index, aapl_data["Close"], label="AAPL")
+# Customize the plot
+plt.xlabel('Date')
+plt.ylabel('Price ($)')
+plt.title('Historical Stock Prices for MSFT and AAPL')
+plt.legend()
 
-ax.set_xlabel("Year")
-ax.set_ylabel("Stock Price ($)")
-ax.set_title("Microsoft vs. Apple Stock Price")
-ax.legend()
-
+# Display the plot
 plt.show()
